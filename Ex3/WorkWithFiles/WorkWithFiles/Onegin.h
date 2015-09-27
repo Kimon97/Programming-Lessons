@@ -1,14 +1,15 @@
 #pragma once
 class Onegin {
 private:
-	vector<std::string> strmas;
+	vector<string> strmas;
 	void Sort();
-	static bool Compare(std::string str1, std::string str2);
+	static bool Compare(string str1, string str2);
+	static bool isalpha_(char);
 
 public:
 	Onegin(char* path);
 
-	std::string GetNewOnegin();
+	string GetNewOnegin();
 
 	virtual ~Onegin();
 

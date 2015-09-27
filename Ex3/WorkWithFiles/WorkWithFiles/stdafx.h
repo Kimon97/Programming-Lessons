@@ -13,7 +13,8 @@
 
 
 #include <allocators>
-#include <string>
+#include <boost\container\string.hpp>
+using boost::container::string;
 #include <boost\container\vector.hpp>
 using boost::container::vector;
 #include <algorithm>
@@ -22,5 +23,8 @@ using boost::container::vector;
 
 #include "Exceptions.h"
 #include "Onegin.h"
+#include <ctype.h>
+
+#include <locale>
 
 void OperateException(Exception e);

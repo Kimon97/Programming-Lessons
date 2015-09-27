@@ -8,13 +8,13 @@ enum ExcepCodes{
 };
 class Exception {
 private:
-	std::string info;
+	string info;
 	ExcepCodes code;
 
 public:
-	Exception(std::string info, ExcepCodes code);
+	Exception(string info, ExcepCodes code);
 	Exception(const Exception& except);
-	std::string Info() const;
+	string Info() const;
 	ExcepCodes Code() const;
 
 	virtual ~Exception();
