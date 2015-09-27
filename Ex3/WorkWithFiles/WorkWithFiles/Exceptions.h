@@ -2,7 +2,9 @@
 #include "stdafx.h"
 enum ExcepCodes{
 	Creating,
-	Deleting
+	Deleting,
+
+	Sorting
 };
 class Exception {
 private:

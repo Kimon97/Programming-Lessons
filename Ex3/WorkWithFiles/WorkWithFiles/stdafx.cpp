@@ -10,7 +10,11 @@ void OperateException(Exception e) {
 		printf("Problems with creating: \n");
 		break;
 	case Deleting:
+		printf("Problems with deleting: \n");
+		break;
 
+	case Sorting:
+		printf("Problems with sorting: \n");
 		break;
 	default:
 		printf("Some non-declered problems: \n");

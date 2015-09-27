@@ -58,11 +58,17 @@ bool Onegin::Compare(std::string str1, std::string str2) {
 
 //private
 void Onegin::Sort() {
-	vector<std::string>::iterator begin = strmas.begin(), 
-									end = strmas.end();
+	try {
+		vector<std::string>::iterator begin = strmas.begin(),
+			end = strmas.end();
 
 
-	std::sort(begin, end, Compare);
+		std::sort(begin, end, Compare);
+	}
+	catch (std::exception e) {
+		throw Exception(std::string(e.what()), Sorting);
+	}
+
 }
 
 //public
