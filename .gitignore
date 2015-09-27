@@ -8,10 +8,10 @@
 *.sln.docstates
 
 # Build results
-#[Dd]ebug/
-#[Dd]ebugPublic/
-#[Rr]elease/
-#[Rr]eleases/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
 x64/
 x86/
 build/
@@ -230,18 +230,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-#Don't use
 *.vcxproj
 *.vcxproj.filters
 targetver.h
 targetver.cpp
-
-#From Debug and Release
-*.log
-*.tlog
-*.obj
-*.pch
-*.idb
-*.pdb
-*.ilk
-*ipch
