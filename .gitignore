@@ -244,4 +244,5 @@ targetver.cpp
 *.idb
 *.pdb
 *.ilk
-*ipch
+*.ipch
+*.db
