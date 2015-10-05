@@ -1,21 +1,24 @@
 #pragma once
 #include "stdafx.h"
-enum ExcepCodes{
+enum ExcepProcCodes{
 	Creating,
 	Deleting,
 
-	Sorting
+	Sorting,
+
+	Reading,
+	Printing
 };
 class Exception {
 private:
 	string info;
-	ExcepCodes code;
+	ExcepProcCodes code;
 
 public:
-	Exception(string info, ExcepCodes code);
+	Exception(string info, ExcepProcCodes code);
 	Exception(const Exception& except);
 	string Info() const;
-	ExcepCodes Code() const;
+	ExcepProcCodes Code() const;
 
 	virtual ~Exception();
 };

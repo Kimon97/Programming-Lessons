@@ -4,9 +4,9 @@
 
 
 
-Onegin::Onegin(char* path) {
-
-	FILE* file = fopen(path, "r");
+Onegin::Onegin(const char* path) {
+#pragma region OLD
+	/*FILE* file = fopen(path, "r");
 
 	if (!file) throw Exception("File isn't existing!",Creating);
 
@@ -33,7 +33,14 @@ Onegin::Onegin(char* path) {
 		i++;
 		buf = temp;
 	}
-	Sort();
+	Sort();*/
+#pragma endregion
+
+	FileInput Input(path);
+
+	strmas = Input.CreateStringsByPattern(PATTERN);
+
+	CutBedSimbols();
 }
 
 //private
@@ -105,7 +112,7 @@ string Onegin::GetNewOnegin() {
 	for (int i = 0; i < 7; i++) {
 		randmas[ i ] = rand()*rand() % (strmas.size() - 1);
 		for (int j = 0; j < i; j++) {
-			if (randmas[ i ] == randmas[ j ]) {
+			if (randmas[ i ] == randmas[ j ] && strmas[ i ] == strmas[ j ]) {
 				i--;
 				break;
 			}
@@ -136,5 +143,31 @@ string Onegin::GetNewOnegin() {
 	res += strmas[ i ] + '\n' += strmas[ i + 1 ] + '\n';
 	return res;
 }
+
+
+bool Onegin::NewOneginToFile(const char* fName,int VersesCount) {
+
+	FILE* file = fopen(fName, "w");
+	if (!file) 
+		throw Exception("Can't open or create file!!!", Printing);
+
+
+	for (int i = 0; i < VersesCount; i++) {
+		string str = GetNewOnegin();
+		if (fwrite(str.c_str(), sizeof(char), str.length(), file) != str.length()) 
+			throw Exception("Can't write!!!", Printing);
+		
+	}
+
+
+}
+
+void Onegin::CutBedSimbols() {
+	for (int i = 0; i < strmas.size(); i++) {
+		strmas[ i ] = strmas[ i ].erase(strmas[ i ].begin(), strmas[ i ].begin() + 2);
+		strmas[ i ] = strmas[ i ].erase(strmas[ i ].end() - 1);
+	}
+}
+
 
 Onegin::~Onegin() {}

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Exceptions.h"
 
-Exception::Exception(string info, ExcepCodes code) {
+Exception::Exception(string info, ExcepProcCodes code) {
 	this->info = info;
 	this->code = code;
 }
@@ -15,7 +15,7 @@ Exception::Exception(const Exception& except) {
 string Exception::Info() const {
 	return info;
 }
-ExcepCodes Exception::Code() const {
+ExcepProcCodes Exception::Code() const {
 	return code;
 }
 
