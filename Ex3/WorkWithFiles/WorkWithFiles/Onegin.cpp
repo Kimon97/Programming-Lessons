@@ -1,10 +1,24 @@
 #include "stdafx.h"
+
+#include <boost\container\string.hpp>
+using boost::container::string;
+
+#include <boost\container\vector.hpp>
+using boost::container::vector;
+
+#include <random>
+#include <time.h>
+
+#include "FileInput.h"
+#include "FileOutput.h"
+#include "Exceptions.h"
+
 #include "Onegin.h"
 
 
 
 
-Onegin::Onegin(const char* path) {
+Onegin::Onegin(const char* fName) {
 #pragma region OLD
 	/*FILE* file = fopen(path, "r");
 
@@ -36,11 +50,13 @@ Onegin::Onegin(const char* path) {
 	Sort();*/
 #pragma endregion
 
-	FileInput Input(path);
+	FileInput Input(fName);
 
 	strmas = Input.CreateStringsByPattern(PATTERN);
 
 	CutBedSimbols();
+
+	Sort();
 }
 
 //private
@@ -101,71 +117,86 @@ void Onegin::Sort() {
 }
 
 //public
-string Onegin::GetNewOnegin() {
+string Onegin::GetNewOnegin(const int CountOfVerses, const string separator) {
 	srand(time(NULL));
+
+	if (CountOfVerses * 14 > strmas.size())
+		throw Exception("Count of verses you asked is more then posible!", Inputing);
 
 	int i, j;
 	string res;
 
-	int randmas[ 7 ] = {};
+	int size = strmas.size() - 1;
+	int* randmas = (int*)calloc(size,sizeof(*randmas));
 
-	for (int i = 0; i < 7; i++) {
-		randmas[ i ] = rand()*rand() % (strmas.size() - 1);
-		for (int j = 0; j < i; j++) {
-			if (randmas[ i ] == randmas[ j ] && strmas[ i ] == strmas[ j ]) {
-				i--;
-				break;
-			}
-		}
+	if (!randmas)
+		throw Exception("Bed allocation!", Memory);
 
+	//Creating random massive without repetitions
+	for (i = 0; i < size; i++)
+		randmas[ i ] = i;
+
+	i = j = 0;
+
+	int n = size + rand();
+	for (int k = 0; k < n; k++) {
+		i = rand() % size;
+
+		do
+			j = rand() % size;
+		while (j == i);
+
+		std::swap(randmas[ i ], randmas[ j ]);
 	}
-	//ABAB
-	i = randmas[ 0 ];
-	j = randmas[ 1 ];
 
-	res += strmas[ i ] + '\n' += strmas[ j ] + '\n' += strmas[ i + 1 ] + '\n' += strmas[ j + 1 ] + '\n';
+	//Creating verses
+	for (int k = 0; k < CountOfVerses; k++) {
+#pragma region CreatingVerse
+		//ABAB
+		i = randmas[ 7 * k + 0 ];
+		j = randmas[ 7 * k + 1 ];
 
-	//AABB
-	i = randmas[ 2 ];
-	j = randmas[ 3 ];
+		res += strmas[ i ] + '\n' + strmas[ j ] + '\n' + strmas[ i + 1 ] + '\n' + strmas[ j + 1 ] + '\n';
+		string str = strmas[ i ];
+		//AABB
+		i = randmas[ 7 * k + 2 ];
+		j = randmas[ 7 * k + 3 ];
 
-	res += strmas[ i ] + '\n' += strmas[ i + 1 ] + '\n' += strmas[ j ] + '\n' += strmas[ j + 1 ] + '\n';
+		res += strmas[ i ] + '\n' + strmas[ i + 1 ] + '\n' + strmas[ j ] + '\n' + strmas[ j + 1 ] + '\n';
 
-	//ABBA
-	i = randmas[ 4 ];
-	j = randmas[ 5 ];
+		//ABBA
+		i = randmas[ 7 * k + 4 ];
+		j = randmas[ 7 * k + 5 ];
 
-	res += strmas[ i ] + '\n' += strmas[ j ] + '\n' += strmas[ j + 1 ] + '\n' += strmas[ i + 1 ] + '\n';
+		res += strmas[ i ] + '\n' + strmas[ j ] + '\n' + strmas[ j + 1 ] + '\n' + strmas[ i + 1 ] + '\n';
 
-	//AA
-	i = randmas[ 6 ];
+		//AA
+		i = randmas[ 7 * k + 6 ];
 
-	res += strmas[ i ] + '\n' += strmas[ i + 1 ] + '\n';
+		res += strmas[ i ] + '\n' + strmas[ i + 1 ]+'\n';
+
+#pragma endregion
+
+		res += separator;
+	}
 	return res;
 }
 
 
-bool Onegin::NewOneginToFile(const char* fName,int VersesCount) {
+bool Onegin::NewOneginToFile(const char* fName,const int VersesCount) {
 
-	FILE* file = fopen(fName, "w");
-	if (!file) 
-		throw Exception("Can't open or create file!!!", Printing);
+	FileOutput file (fName);
 
+	string str = GetNewOnegin(VersesCount,"\n");
 
-	for (int i = 0; i < VersesCount; i++) {
-		string str = GetNewOnegin();
-		if (fwrite(str.c_str(), sizeof(char), str.length(), file) != str.length()) 
-			throw Exception("Can't write!!!", Printing);
-		
-	}
-
-
+	file.Write(str);
+	return true;
 }
 
 void Onegin::CutBedSimbols() {
 	for (int i = 0; i < strmas.size(); i++) {
-		strmas[ i ] = strmas[ i ].erase(strmas[ i ].begin(), strmas[ i ].begin() + 2);
-		strmas[ i ] = strmas[ i ].erase(strmas[ i ].end() - 1);
+		strmas[ i ].erase(strmas[ i ].begin(), strmas[ i ].begin() + 2);
+		strmas[ i ].erase(strmas[ i ].end() - 1);
 	}
 }
 

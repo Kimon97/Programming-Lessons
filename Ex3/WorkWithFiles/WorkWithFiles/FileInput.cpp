@@ -1,4 +1,16 @@
 #include "stdafx.h"
+
+#include <boost\container\string.hpp>
+using boost::container::string;
+
+#include <boost\container\vector.hpp>
+using boost::container::vector;
+
+#include <regex>
+
+
+#include "Exceptions.h"
+
 #include "FileInput.h"
 
 
@@ -30,14 +42,17 @@ vector<string> FileInput::CreateStringsByPattern(string pattern) {
 	std::smatch matches;
 	std::regex reg(pattern.c_str());
 	std::string str = text.c_str();
-	std::string temp;
+//	std::string temp;
 	vector<string> mas;
 	while (std::regex_search(str, matches, reg)) {
 		for (auto x : matches) {
 			
-			temp = x.str();
+
 			//*(temp.begin() + x.length()) = '\0';
-			mas.push_back(temp.c_str());
+			string temp = x.str().c_str();
+			mas.push_back(temp);
+			temp = mas[ 0 ];
+			
 		
 		}
 		str = matches.suffix();
@@ -45,4 +60,6 @@ vector<string> FileInput::CreateStringsByPattern(string pattern) {
 	return mas;
 }
 
-FileInput::~FileInput() {}
+FileInput::~FileInput() {
+	fclose(file);
+}

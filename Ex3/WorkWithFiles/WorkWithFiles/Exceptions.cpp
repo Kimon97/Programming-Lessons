@@ -1,5 +1,10 @@
 #include "stdafx.h"
+
+#include <boost\container\string.hpp>
+using boost::container::string;
+
 #include "Exceptions.h"
+
 
 Exception::Exception(string info, ExcepProcCodes code) {
 	this->info = info;

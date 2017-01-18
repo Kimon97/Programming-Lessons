@@ -1,12 +1,14 @@
 #pragma once
-#include "stdafx.h"
+
 enum ExcepProcCodes{
 	Creating,
 	Deleting,
 
 	Sorting,
 
-	Reading,
+	Memory,
+
+	Inputing,
 	Printing
 };
 class Exception {

@@ -12,11 +12,11 @@ private:
 	void CutBedSimbols();
 
 public:
-	Onegin(const char* path);
+	Onegin(const char* fName);
 
-	string GetNewOnegin();
+	string GetNewOnegin(const int CountOfVerses, const string separator);
 
-	bool NewOneginToFile(const char* fName, int verses);
+	bool NewOneginToFile(const char* fName,const int CountOfVerses);
 
 	//friend Onegin operator=(Onegin a, int b);
 
